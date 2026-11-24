@@ -29,7 +29,7 @@ class Action(input: String):
     else if this.verb == "drink" then
       val getDrink = actor.inventory.beverages.find(beverage => beverage.name.toLowerCase == this.modifiers.toLowerCase)
       if getDrink.isDefined then
-        actor.drink(getDrink, actionRNG )
+        actor.drink(getDrink.get, actionRNG )
         true
       else
         println("Uh Oh! You dont the drink!")
@@ -38,7 +38,7 @@ class Action(input: String):
     else if this.verb == "eat" then
       val getFood = actor.inventory.foods.find(food => food.name.toLowerCase == this.modifiers.toLowerCase)
       if getFood.isDefined then
-        actor.drink(getFood, actionRNG )
+        actor.eat(getFood.get)
         true
       else
         println("Uh Oh! You dont that food!")
