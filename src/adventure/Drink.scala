@@ -1,0 +1,3 @@
+package adventure
+
+class Drink
