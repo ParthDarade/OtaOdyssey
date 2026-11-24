@@ -27,6 +27,10 @@ class Player(startingArea: Position, map: GameMap, val maxHp: Int = DefaultMaxHp
   private var quitCommandGiven = false
   private var currentHp  = maxHp
 
+  private var activeQuest: Option[Quest] = None
+  val isInQuest = activeQuest.exists(!_.isFinished)
+
+
   val inventory = new Inventory
   private val effects    = mutable.Buffer[ActiveEffect]()
 
@@ -42,6 +46,17 @@ class Player(startingArea: Position, map: GameMap, val maxHp: Int = DefaultMaxHp
   /** Returns the current location of the player. */
   def location = this.currentLocation
 
+  /** Starts a given quest for the player. */
+  def startQuest(quest: Quest): Unit =
+    activeQuest = Some(quest)
+    println(s"Starting Quest: ${quest.name}")
+    quest.advanceDialogue()
+
+  def continueQuest(): Unit=
+    activeQuest.foreach{ quest=>
+      if !quest.advanceDialogue() then
+        activeQuest = None
+    }
   /** Causes the player to rest for a short while. (This has no substantial effect in game terms.)
     * Prints out a message stating that the player rests. */
   def rest() =

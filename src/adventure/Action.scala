@@ -16,11 +16,13 @@ class Action(input: String):
     * that the command was understood. Returns ``false` if the command was not recognized
     * and true` otherwise. */
   def execute(actor: Player): Boolean =
-
-    if this.verb == "go" then
+    if actor.isInQuest && this.command.isEmpty then
+      actor.continueQuest()
+      true
+    else if this.verb == "go" && !actor.isInQuest then
       actor.go(this.modifiers)
       true
-    else if this.verb == "rest" then
+    else if this.verb == "rest" && !actor.isInQuest then
       actor.rest()
       true
     else if this.verb == "attack" then
@@ -29,7 +31,7 @@ class Action(input: String):
     else if this.verb == "drink" then
       val getDrink = actor.inventory.beverages.find(beverage => beverage.name.toLowerCase == this.modifiers.toLowerCase)
       if getDrink.isDefined then
-        actor.drink(getDrink.get, actionRNG )
+        getDrink.foreach(drink => actor.drink(drink, actionRNG ))
         true
       else
         println("Uh Oh! You dont the drink!")
@@ -38,7 +40,7 @@ class Action(input: String):
     else if this.verb == "eat" then
       val getFood = actor.inventory.foods.find(food => food.name.toLowerCase == this.modifiers.toLowerCase)
       if getFood.isDefined then
-        actor.eat(getFood.get)
+        getFood.foreach(food => actor.eat(food))
         true
       else
         println("Uh Oh! You dont that food!")

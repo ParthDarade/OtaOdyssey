@@ -114,6 +114,8 @@ class GameMap:
       val nextPos = destination(start,heading,distanceNm)
       checkSurroundings(nextPos, VisibleRange)
       Some(nextPos)
+      
+
 
 
   private val land: Vector[Vector[(Double, Double)]] = Vector(
