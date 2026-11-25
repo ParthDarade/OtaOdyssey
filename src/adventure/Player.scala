@@ -28,7 +28,6 @@ class Player(startingArea: Position, map: GameMap, val maxHp: Int = DefaultMaxHp
   private var currentHp  = maxHp
 
   private var activeQuest: Option[Quest] = None
-  val isInQuest = activeQuest.exists(!_.isFinished)
 
 
   val inventory = new Inventory
@@ -46,10 +45,13 @@ class Player(startingArea: Position, map: GameMap, val maxHp: Int = DefaultMaxHp
   /** Returns the current location of the player. */
   def location = this.currentLocation
 
+  /** Is the player in a quest currently? */
+  def isInQuest: Boolean = activeQuest.exists(!_.isFinished)
+
   /** Starts a given quest for the player. */
   def startQuest(quest: Quest): Unit =
     activeQuest = Some(quest)
-    println(s"Starting Quest: ${quest.name}")
+    println( quest.description)
     quest.advanceDialogue()
 
   def continueQuest(): Unit=
@@ -81,7 +83,7 @@ class Player(startingArea: Position, map: GameMap, val maxHp: Int = DefaultMaxHp
         else if distanceNm > MaxHopNm then
           println(s"Cannot travel $distanceNm nm in a single hop (max hop is $MaxHopNm nm).")
         else
-          map.travel(currentLocation, heading, distanceNm) match
+          map.travel(this, currentLocation, heading, distanceNm) match
             case Some(nextPos) =>
               currentLocation = nextPos
             case None =>

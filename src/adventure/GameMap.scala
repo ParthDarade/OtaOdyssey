@@ -101,7 +101,7 @@ class GameMap:
     ceil(normalized * 10.0) / 10.0
 
 
-  def checkSurroundings(pos: Position, thresholdNm: Double): Unit =
+  def checkSurroundings(player: Player ,pos: Position, thresholdNm: Double): Unit =
     landmarks.find((_, target) => distanceNmBetween(pos, target) <= thresholdNm).foreach { (name, targetloc) =>
 
       println(s"Spotted $name at ${this.heading(pos,targetloc)}")
@@ -111,18 +111,18 @@ class GameMap:
       println(s"Do you wish to land? (type yes/y)")
       val choice = scala.io.StdIn.readLine().trim.toLowerCase
       if choice == "yes" || choice == "y" then
-        place.landAtPlace()
+        place.landAtPlace(player)
       else println("Continuing Voyage.....")
     }
 
 
-  def travel(start: Position, heading: Double, distanceNm: Double): Option[Position] =
+  def travel(player: Player,start: Position, heading: Double, distanceNm: Double): Option[Position] =
     if !canTravel(start,heading,distanceNm) then
       println("I'm afraid the sea does not extend in that direction, Captain. Might you be obstructed?")
       None
     else
       val nextPos = destination(start,heading,distanceNm)
-      checkSurroundings(nextPos, VisibleRange)
+      checkSurroundings(player,nextPos, VisibleRange)
       Some(nextPos)
       
 
