@@ -28,7 +28,7 @@ class Combat(
     while !isFinished && !player.hasQuit do
       print("\n> ")
       val rawInput = Option(StdIn.readLine())
-      if !rawInput.isDefined then
+      if rawInput.isEmpty then
         player.quit()
         println("Exiting combat.")
       else
