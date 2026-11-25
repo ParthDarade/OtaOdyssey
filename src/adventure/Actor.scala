@@ -1,3 +1,0 @@
-package adventure
-
-class Actor
