@@ -8,7 +8,7 @@ object EnemyCatalog {
     name = "Matti Dörade",
     description = "A scruffy pirate swings over from another ship, cutlass drawn.",
     maxHp = 40,
-    armor = 10,
+    armor = 3,
     attack = 10,
     accuracy = 0.80,
     chestDrops = Vector(
@@ -24,31 +24,11 @@ object EnemyCatalog {
     )
   )
 
-  val seaSerpent: EnemyType = new EnemyType(
-    name = "Sea Serpent",
-    description = "A scaly head rises out of the waves, hissing.",
-    maxHp = 80,
-    armor = 20,
-    attack = 18,
-    accuracy = 0.75,
-    chestDrops = Vector(
-      new ChestDrop(ChestCatalog.ironChest, 0.40),
-      new ChestDrop(ChestCatalog.diamondChest, 0.15)
-    ),
-    dialogs = Map(
-      DialogTrigger.Appear -> Vector("SSSSSS...", "The water around the ship starts to boil."),
-      DialogTrigger.Attack -> Vector("HISSSS!", "The serpent lashes its tail."),
-      DialogTrigger.Hurt   -> Vector("The serpent shrieks.", "Dark blood stains the water."),
-      DialogTrigger.Defeat -> Vector("The serpent sinks beneath the waves.")
-    )
-  )
-
-  /** Steals a beverage and drinks it on the spot. */
   val student: EnemyType = new EnemyType(
     name = "Exhausted Student",
     description = "A pale student crawls onto the deck, clutching a half-finished lab report.",
     maxHp = 30,
-    armor = 5,
+    armor = 1,
     attack = 6,
     accuracy = 0.90,
     stealChance = 0.50,
@@ -59,16 +39,49 @@ object EnemyCatalog {
       DialogTrigger.Appear -> Vector("Is that... a drink? I haven't slept in three days.", "Do you have a pen? And a drink?"),
       DialogTrigger.Attack -> Vector("My deadline was yesterday!", "I just need a little energy!"),
       DialogTrigger.Hurt   -> Vector("This is worse than the exam!", "Ow! I have a presentation tomorrow!"),
-      DialogTrigger.Defeat -> Vector("At least... the exam is over...", "Tell the professor I tried...")
+      DialogTrigger.Defeat -> Vector("At least... the exam is over...", "Tell the professor, I tried...")
     )
   )
 
+  val ronnin: EnemyType = new EnemyType(
+    name = "Ronnin",
+    description = "A disgruntled arts student who failed his course and is hunting the professor for revenge.",
+    maxHp = 75,
+    armor = 3,
+    attack = 14,
+    accuracy = 0.85,
+    pierce = 0.15,
+    stealChance = 0.15,
+    openingDamage = 0,
+    chestDrops = Vector(
+      new ChestDrop(ChestCatalog.woodenChest, 0.70),
+      new ChestDrop(ChestCatalog.ironChest, 0.25)
+    ),
+    dialogs = Map(
+      DialogTrigger.Appear -> Vector(
+        "You'are with the faculty, aren't you?! Tell the professor my portfolio deserved a pass!",
+        "Failed?! On an interpretive critique?! I'll show you critical theory!"
+      ),
+      DialogTrigger.Attack -> Vector(
+        "Take this pure, unfiltered artistic rage!",
+        "My thesis was ahead of its time!"
+      ),
+      DialogTrigger.Hurt -> Vector(
+        "Ugh... this hurts almost as much as that F on my transcript!",
+        "You're grading me harsher than he did!"
+      ),
+      DialogTrigger.Defeat -> Vector(
+        "Fine... I'll retake the course next semester...",
+        "Tell the professor... I'm filing an appeal..."
+      )
+    )
+  )
   /** Only appears from a mimic chest. Its opening damage comes from the chest. */
   val mimic: EnemyType = new EnemyType(
     name = "Mimic",
     description = "The chest sprouts teeth and a long, hungry tongue!",
     maxHp = 35,
-    armor = 8,
+    armor = 3,
     attack = 12,
     accuracy = 0.85,
     dialogs = Map(
@@ -80,8 +93,8 @@ object EnemyCatalog {
   )
 
   /** The kinds that can attack the player at sea (the mimic is not one of them). */
-  val wanderers: Vector[EnemyType] = Vector(pirate, seaSerpent, student)
-  
-  val all: Vector[EnemyType] = Vector(pirate, seaSerpent, student, mimic)
+  val wanderers: Vector[EnemyType] = Vector(pirate, student, ronnin)
+
+  val all: Vector[EnemyType] = Vector(pirate, student, ronnin, mimic)
 
 }

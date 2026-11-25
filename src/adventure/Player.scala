@@ -52,11 +52,11 @@ class Player(startingArea: Position, map: GameMap, val maxHp: Int = DefaultMaxHp
   def startQuest(quest: Quest): Unit =
     activeQuest = Some(quest)
     println( quest.description)
-    quest.advanceDialogue()
+    quest.advanceDialogue(this)
 
   def continueQuest(): Unit=
     activeQuest.foreach{ quest=>
-      if !quest.advanceDialogue() then
+      if !quest.advanceDialogue(this) then
         activeQuest = None
     }
   /** Causes the player to rest for a short while. (This has no substantial effect in game terms.)
