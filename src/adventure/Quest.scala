@@ -19,7 +19,7 @@ class Quest(val name: String, val description: String, val dialogues: Vector[Str
             dialogueIndex += 1
             if isFinished then
               println(s"[End of dialogue]")
-              Combat(player,enemy, rng)
+              Combat(player,enemy, rng).run()
             else
               println("(Press Enter to continue...)")
             true
