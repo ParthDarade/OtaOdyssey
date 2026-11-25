@@ -1,7 +1,9 @@
 package adventure.Catalogs
 import adventure.Quest
-
+import adventure.Enemy
 object QuestCatalog:
+  val Goblin = Enemy(EnemyCatalog.pirate)
+  val Ronin = Enemy(EnemyCatalog.student)
   val TokyoDialogues = Vector(
 
   "Professor Mori: Ah! You must be the captain I was expecting.\nProfessor Hidetaka Mori, at your service. I am most grateful that you have come all this way." ,
@@ -76,8 +78,10 @@ object QuestCatalog:
   val SirenQuest = Quest(
     name = "The Sauna Goblin",
     description = "You approach a small rocky island and notice a wooden sauna nestled between the pine trees.\\nSeveral semi-naked students wearing nothing but towels and Teekkari caps are gathered outside. They look rather miserable.\\nOne of them notices your vessel and rushes towards the shore.",
-    dialogues = SirenDialogues
+    dialogues = SirenDialogues,
+    enemy = Goblin
   )
   val TokyoQuest = Quest( name = "Tokyo Quest",
-    description = "You bring your vessel alongside a small wooden pier and step ashore.\nA narrow stone path leads from the beach towards a traditional Japanese residence. An elderly gentleman stands outside, leaning on a wooden walking stick.\nUpon seeing you, he approaches.", dialogues = TokyoDialogues
+    description = "You bring your vessel alongside a small wooden pier and step ashore.\nA narrow stone path leads from the beach towards a traditional Japanese residence. An elderly gentleman stands outside, leaning on a wooden walking stick.\nUpon seeing you, he approaches.", dialogues = TokyoDialogues,
+    enemy = Ronin
     )

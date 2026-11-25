@@ -3,8 +3,6 @@ package adventure
 import scala.util.Random
 
 
-
-
 class Enemy(val kind: EnemyType, val openingDamage: Int) {
 
   /** Uses the opening damage of the kind (for a mimic, give the chest's damage instead). */
