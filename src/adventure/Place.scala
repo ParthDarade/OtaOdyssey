@@ -1,8 +1,8 @@
 package adventure
 
-class Place(val name: String, val location: Position, val quest: Quest):
+class Place(val name: String, val location: Position, val quest: Quest, val radius:Int = 2):
   val description = "You smell sea salt and boundless water in the sea."
-  val radius = 2 //In Nautical Miles
+   //In Nautical Miles
   var isLandedAtPlace = false
   var isQuestOver = false
 
@@ -18,7 +18,7 @@ class Place(val name: String, val location: Position, val quest: Quest):
       println(" A quest is available, Would you like to participate? (type yes/y)")
       val choice = scala.io.StdIn.readLine().trim.toLowerCase
       if choice == "y"|| choice== "yes" then
-        
+
         player.startQuest(this.quest)
 
 

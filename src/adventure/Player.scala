@@ -158,6 +158,14 @@ class Player(startingArea: Position, map: GameMap, val maxHp: Int = DefaultMaxHp
     s"HP: $hp/$maxHp | Armor: $armor | Attack: $attackPower | Luck: $luck | " +
       s"Hit chance: ${(hitChance * 100).round}% | Effects: $effectText"
 
+  def debug() =
+    println("CURRENT LOCATION------")
+    println(this.location.LatToDDMMSS)
+    println(this.location.LongToDDMMSS)
+    println("CURRENT LOCATION- IN PIXELS-----")
+    println(this.map.toPixels(this.location))
+
+
 end Player
 
 class ActiveEffect(

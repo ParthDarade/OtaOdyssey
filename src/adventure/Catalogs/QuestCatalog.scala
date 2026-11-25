@@ -3,7 +3,38 @@ import adventure.Quest
 import adventure.Enemy
 object QuestCatalog:
   val Goblin = Enemy(EnemyCatalog.pirate)
-  val Ronin = Enemy(EnemyCatalog.student)
+  val Ronin = Enemy(EnemyCatalog.ronnin)
+  val Student = Enemy(EnemyCatalog.student)
+
+  val OtaniemiDialogues = Vector(
+  "Student: HEY! YOU! STOP RIGHT THERE!",
+
+  "You: What seems to be the trouble?",
+
+  "Student: Trouble?! I've been sitting in this bloody university building for FOURTEEN HOURS!",
+
+  "You: Surely you could take a break?",
+
+  "Student: A BREAK?! Have you ever tried compiling a Scala project with seventeen missing dependencies and a deadline in three hours?!",
+
+  "You: I can't say that I have.",
+
+  "Student: Well, I HAVE! And now the compiler is telling me that my perfectly reasonable code is WRONG!",
+
+  "You: Perhaps you should ask someone for help?",
+
+  "Student: I DID! The assistant told me to read the documentation! THE DOCUMENTATION!",
+
+  "You: What do you want from me?",
+
+  "Student: I need coffee. Real coffee. Not that overpriced university canteen nonsense. There's a vending machine nearby, but I've run out of coins.",
+
+  "You: And you expect me to help?",
+
+  "Student: Get me a coffee, Captain. I'll make it worth your while.",
+
+  "Student: And whatever you do, DON'T MENTION FUNCTIONAL PROGRAMMING."
+  )
   val TokyoDialogues = Vector(
 
   "Professor Mori: Ah! You must be the captain I was expecting.\nProfessor Hidetaka Mori, at your service. I am most grateful that you have come all this way." ,
@@ -46,7 +77,7 @@ object QuestCatalog:
 
   "You: What on earth happened here?",
 
-  "Teekkari: A goblin! A bloody goblin has seized our sauna!\nWe were having a perfectly respectable sauna evening when the little beast came out of the forest and claimed the building as his own.",
+  "Teekkari: A Pirate! A bloody Pirate has seized our sauna!\nWe were having a perfectly respectable sauna evening when the little beast came out of the forest and claimed the building as his own.",
 
   "You: And you simply let him have it?",
 
@@ -58,7 +89,7 @@ object QuestCatalog:
 
   "You: So what do you expect me to do?",
 
-  "Teekkari: We need someone with a little more authority. And preferably someone who isn't afraid of a goblin with a ladle.",
+  "Teekkari: We need someone with a little more authority. And preferably someone who isn't afraid of a Pirate with a ladle.",
 
   "You: Where can I find him?",
 
@@ -76,7 +107,7 @@ object QuestCatalog:
   )
 
   val SirenQuest = Quest(
-    name = "The Sauna Goblin",
+    name = "The Sauna Pirate",
     description = "You approach a small rocky island and notice a wooden sauna nestled between the pine trees.\\nSeveral semi-naked students wearing nothing but towels and Teekkari caps are gathered outside. They look rather miserable.\\nOne of them notices your vessel and rushes towards the shore.",
     dialogues = SirenDialogues,
     enemy = Goblin
@@ -85,3 +116,9 @@ object QuestCatalog:
     description = "You bring your vessel alongside a small wooden pier and step ashore.\nA narrow stone path leads from the beach towards a traditional Japanese residence. An elderly gentleman stands outside, leaning on a wooden walking stick.\nUpon seeing you, he approaches.", dialogues = TokyoDialogues,
     enemy = Ronin
     )
+  val OtaniemiQuest = Quest(
+    name = "The Final Deadline",
+    description = "You arrive at Otaniemi and encounter a visibly exhausted student outside a university building. He appears to have spent the better part of a day wrestling with a programming assignment. He desperately needs coffee before his impending deadline. Find him a cup of coffee and perhaps restore some semblance of sanity to this poor soul.",
+    dialogues = OtaniemiDialogues,
+    enemy = Student
+  )

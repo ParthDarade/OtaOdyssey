@@ -1,5 +1,6 @@
 package adventure
 import scala.io.StdIn.*
+import adventure.Catalogs.*
 
 class GameController:
   val title = "A Forest Adventure"
@@ -9,6 +10,14 @@ class GameController:
   val gameMap = new GameMap()
   /** The character who is the protagonist of the adventure and whom the real-life player controls. */
   val player = Player(startingPoint, gameMap)
+  player.inventory.addAll(Vector(
+    WeaponCatalog.cutlass,
+    ArmorCatalog.leatherChestplate,
+    ArmorCatalog.leatherLeggings,
+    FoodCatalog.apple,
+    BeverageCatalog.rum
+  ))
+  player.inventory.equip(WeaponCatalog.cutlass)
   /** The number of turns that have passed since the start of the game. */
   var turnCount = 0
   /** The maximum number of turns that this adventure game allows before time runs out. */
@@ -16,15 +25,17 @@ class GameController:
 
 
   /** Determines if the adventure is complete, that is, if the player has won. */
-  def isComplete = this.player.location == this.destination
+  def isComplete = player.isAlive && QuestCatalog.OtaniemiQuest.isFinished
 
   /** Determines whether the player has won, lost, or quit, thereby ending the game. */
   def isOver = this.isComplete || this.player.hasQuit || this.turnCount == this.timeLimit
 
   /** Prints out a message that is to be displayed to the player at the beginning of the game. */
   def printWelcome(): Unit =
-    println("You are Otaniemi's last hope, Sail to Tallinn, get a crate of beer and deliver it back home \n")
-    println("Goodluck sailor, Be careful of the currents, sharks, and steer clear of the Helsinki police on your final course.")
+    println("Captain! Otaniemi is in dire need of supplies. A shipment of beer awaits collection in Tallinn, and you have been entrusted with its delivery to the shores of Otaniemi.")
+    println("Your passage lies across the treacherous Gulf of Finland. Navigate the currents, mind the reefs, and keep a weather eye open for passing vessels. The Helsinki authorities are notoriously particular about their waters.")
+    println("Make landfall at Otaniemi, deliver the cargo, and you shall have earned the gratitude of the entire teekkari community.")
+    println("Fair winds and following seas, Captain. Otaniemi awaits!")
 
 
   /** Prints out a message that is to be displayed to the player at the end of the game.
@@ -32,11 +43,11 @@ class GameController:
   def printGoodbye(): Unit =
     println()
     if this.isComplete then
-      println("Home at last... and phew, just in time! Well done!")
+      println("Otaniemi will remember your adventure untill the possible Vappu. Until then, You have a Matrix algebra exercise in 2 hours !")
     else if this.turnCount == this.timeLimit then
-      println("Oh no! Time's up. Starved of entertainment, you collapse and weep like a child.\nGame over!")
+      println("Oh no! Your voyage has come to an end. With no provisions, no port in sight, and no hope of rescue, you slump against the helm and weep like a cabin boy.\nGame over!")
     else   // game over due to player quitting
-      println("Quitter!")
+      println("Haha! Made you rage quit!")
 
 
   /** Runs the game. First, a welcome message is printed, then the player gets the chance

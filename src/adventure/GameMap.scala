@@ -5,7 +5,7 @@ import adventure.Catalogs.QuestCatalog
 class GameMap:
   private val Width = 1066.0
   private val Height = 835.0
-  private val VisibleRange = 5
+  private val VisibleRange = 8
   // Map projection based on the geographical grid.
   // Reference: 24°00'E, 59°40'N at pixel (155, 570).
   def toPixels(position: Position): (Double,Double)=
@@ -215,5 +215,7 @@ class GameMap:
     ("TOKYO Tower Island", fromPixels(596.0, 365.0))
   )
   private val places: Vector[Place] = Vector(
-    Place(name = "Tokyo Tower Island", location = fromPixels(596.0, 365.0), quest = QuestCatalog.TokyoQuest)
+    Place(name = "Tokyo Tower Island", location = fromPixels(596.0, 365.0), quest = QuestCatalog.TokyoQuest),
+    Place(name = "Island Of Sirens", location = fromPixels(435, 554), quest = QuestCatalog.SirenQuest, radius = 3),
+    Place(name = "Coast of Otaniemi", location = fromPixels(591,39), quest = QuestCatalog.OtaniemiQuest, radius = 5)
   )

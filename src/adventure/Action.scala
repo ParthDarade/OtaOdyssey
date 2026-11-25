@@ -19,32 +19,13 @@ class Action(input: String):
     if actor.isInQuest && this.command.isEmpty then
       actor.continueQuest()
       true
-    else if this.verb == "go" && !actor.isInQuest then
+    else if this.verb == "sail" && !actor.isInQuest then
       actor.go(this.modifiers)
       true
-    else if this.verb == "rest" && !actor.isInQuest then
-      actor.rest()
+    else if this.verb == "debug" then
+      actor.debug()
       true
-    else if this.verb == "attack" then
-      // TODO: Implement the Attack Funcion in Player class
-      true
-    else if this.verb == "drink" then
-      val getDrink = actor.inventory.beverages.find(beverage => beverage.name.toLowerCase == this.modifiers.toLowerCase)
-      if getDrink.isDefined then
-        getDrink.foreach(drink => actor.drink(drink, actionRNG ))
-        true
-      else
-        println("Uh Oh! You dont the drink!")
-        false
 
-    else if this.verb == "eat" then
-      val getFood = actor.inventory.foods.find(food => food.name.toLowerCase == this.modifiers.toLowerCase)
-      if getFood.isDefined then
-        getFood.foreach(food => actor.eat(food))
-        true
-      else
-        println("Uh Oh! You dont that food!")
-        false
     else if this.verb == "quit" then
       actor.quit()
       true
