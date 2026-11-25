@@ -105,6 +105,15 @@ class GameMap:
 
       println(s"Spotted $name at ${this.heading(pos,targetloc)}")
     }
+    places.find(place => place.isAtPlace(pos) ).foreach{ place =>
+      println(s" Approaching: ${place.name}")
+      println(s"Do you wish to land? (type yes/y)")
+      val choice = scala.io.StdIn.readLine().trim.toLowerCase
+      if choice == "yes" || choice == "y" then
+        place.landAtPlace()
+      else println("Continuing Voyage.....")
+    }
+
 
   def travel(start: Position, heading: Double, distanceNm: Double): Option[Position] =
     if !canTravel(start,heading,distanceNm) then
@@ -203,4 +212,7 @@ class GameMap:
     ("Otaniemi", fromPixels(473.0, 75.0)),
     ("Island of the Sirens", fromPixels(433.0, 550.0)),
     ("TOKYO Tower Island", fromPixels(596.0, 365.0))
+  )
+  private val places: Vector[Place] = Vector(
+    Place(name = "Tokyo Tower Island", location = fromPixels(596.0, 365.0), quest = Quest("Finding the pirate"))
   )

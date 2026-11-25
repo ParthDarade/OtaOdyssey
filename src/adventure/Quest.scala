@@ -1,8 +1,7 @@
 package adventure
 
-class Quest(val name: String):
-  val description = "An unknown quest."
-  val dialogues = Vector[String]()
+class Quest(val name: String, val description: String, val dialogues: Vector[String]):
+
   private var dialogueIndex: Int = 0
 
   def isFinished: Boolean = dialogueIndex >= dialogues.length
