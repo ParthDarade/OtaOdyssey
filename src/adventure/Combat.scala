@@ -63,6 +63,8 @@ class Combat(
         val lower = arg.toLowerCase
         if arg.isEmpty || lower == "bag" || lower == "inventory" || lower == "inv" then
           println(openBag())
+        else if lower.contains("chest") then
+          println("You cannont open chests in combat!")
         else
           println(openCategory(arg))
         println(CommandList)

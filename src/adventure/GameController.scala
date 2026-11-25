@@ -16,7 +16,7 @@ class GameController:
     ArmorCatalog.leatherChestplate,
     ArmorCatalog.leatherLeggings,
     FoodCatalog.apple,
-    BeverageCatalog.rum
+    BeverageCatalog.rum,
   ))
   player.inventory.equip(WeaponCatalog.spear)
   player.inventory.equip(ArmorCatalog.leatherChestplate)
@@ -40,9 +40,10 @@ class GameController:
     println("Your passage lies across the treacherous Gulf of Finland. Navigate the currents, mind the reefs, and keep a weather eye open for passing vessels. The Helsinki authorities are notoriously particular about their waters.")
     println("Make landfall at Otaniemi, deliver the cargo, and you shall have earned the gratitude of the entire teekkari community.")
     println("Fair winds and following seas, Captain. Otaniemi awaits!")
-    println("\nTo set sail, use command 'sail direction distance'. 0 represents north, 90 represents east and so on.")
-    println("Example: If you use sail 0 5, you will sail towards north for 5 miles.")
-
+    println("\nTo set sail, use command 'sail direction distance'. 0 represents north, 90 represents east and so on. The maximum distance is 10 nautical miles!")
+    println("When you are near a landmark, you will be able to see the landmark`s direction and distance to you.")
+    println("Example: If you use sail 0 5, you will sail towards north for 5 nautical miles.")
+    println("\nStart with: sail 0 10")
 
   /** Prints out a message that is to be displayed to the player at the end of the game.
     * The message will be different depending on whether the player has completed the quest. */
@@ -84,6 +85,6 @@ class GameController:
 
   def score: Int =
     val inv = this.player.inventory
-    inv.beverages.size * 10 + (if inv.hasSpecialBeverage then 50 else 0) + inv.unopenedChestCount * 20
+    inv.beverages.size * 100 + (if inv.hasSpecialBeverage then 1000 else 0) + inv.unopenedChestCount * 25
 
 end GameController

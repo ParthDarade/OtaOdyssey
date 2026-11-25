@@ -35,12 +35,12 @@ class Action(input: String):
           if modifiers == "chest" || modifiers.startsWith("chest ") then
             val chestName = if modifiers == "chest" then "" else modifiers.drop("chest".length).trim
             actor.openChestByName(chestName)
+            true
+          else if modifiers.nonEmpty then
+            println( if modifiers == "bag" then actor.inventory.openBag else actor.inventory.openCategory(modifiers))
+            true
           else
-            println(if modifiers.isEmpty then actor.inventory.openBag else actor.inventory.openCategory(modifiers))
-          true
-        case "unlock" =>
-          actor.openChestByName(modifiers)
-          true
+            false
         case "eat" =>
           actor.eatByName(modifiers)
           true

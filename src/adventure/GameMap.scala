@@ -6,7 +6,7 @@ import adventure.Catalogs.QuestCatalog
 class GameMap:
   private val Width = 1066.0
   private val Height = 835.0
-  private val VisibleRange = 8
+  private val VisibleRange = 12
   // Map projection based on the geographical grid.
   // Reference: 24°00'E, 59°40'N at pixel (155, 570).
   def toPixels(position: Position): (Double,Double)=
@@ -100,12 +100,13 @@ class GameMap:
     val degrees = toDegrees(atan2(y, x))
     val normalized= (degrees + 360.0) % 360.0
     ceil(normalized * 10.0) / 10.0
-
+  def distanceRoundedBetween(pos1: Position, pos2: Position)=
+    (ceil(distanceNmBetween(pos1, pos2)* 10.0)/ 10.0) -2
 
   def checkSurroundings(player: Player ,pos: Position, thresholdNm: Double): Unit =
     landmarks.find((_, target) => distanceNmBetween(pos, target) <= thresholdNm).foreach { (name, targetloc) =>
 
-      println(s"Spotted $name at ${this.heading(pos,targetloc)}")
+      println(s"Spotted $name at ${this.heading(pos,targetloc)} ${ceil(distanceNmBetween(pos,targetloc) * 10.0) / 10.0}")
     }
     places.find(place => !place.isQuestOver && place.isAtPlace(pos)).foreach{ place =>
       println(s" Approaching: ${place.name}")
@@ -211,7 +212,7 @@ class GameMap:
     )
   )
   private val landmarks: List[(String, Position)] = List(
-    ("Otaniemi", fromPixels(473.0, 75.0)),
+    ("Otaniemi", fromPixels(591.0,39.0)),
     ("Island of the Sirens", fromPixels(433.0, 550.0)),
     ("TOKYO Tower Island", fromPixels(596.0, 365.0))
   )
