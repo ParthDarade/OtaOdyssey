@@ -1,4 +1,5 @@
 package adventure
+
 import scala.util.Try
 import scala.collection.mutable
 import scala.util.Random
@@ -33,6 +34,8 @@ class Player(startingArea: Position, map: GameMap, val maxHp: Int = DefaultMaxHp
   val inventory = new Inventory
   private val effects    = mutable.Buffer[ActiveEffect]()
 
+  private val rng = Random()
+
   /** Returns the current Hit points of the player. */
   def hp: Int = currentHp
 
@@ -64,32 +67,36 @@ class Player(startingArea: Position, map: GameMap, val maxHp: Int = DefaultMaxHp
   def rest() =
     println("You rest for a while. Better get a move on, though.")
 
-  def go(modifiers: String): Unit =
+  def go(modifiers: String): Boolean =
     val parts = modifiers.trim.split("\\s+").filter(_.nonEmpty)
 
     if parts.isEmpty then
-      println("Go where? Specify a heading (and optional distance in nautical miles), e.g.: go 90 5")
-      return
+      println("Sail where? Specify a heading (and optional distance in nautical miles), e.g.: sail 90 5")
+      false
+    else
+      val headingOpt = Try(parts(0).toDouble).toOption
+      val distanceOpt =
+        if parts.length >= 2 then Try(parts(1).toDouble).toOption
+        else Some(DefaultHopNm)
 
-    val headingOpt = Try(parts(0).toDouble).toOption
-    val distanceOpt =
-      if parts.length >= 2 then Try(parts(1).toDouble).toOption
-      else Some(DefaultHopNm)
-
-    (headingOpt, distanceOpt) match
-      case (Some(heading), Some(distanceNm)) =>
-        if distanceNm <= 0.0 then
-          println(s"Distance must be positive (got $distanceNm nm).")
-        else if distanceNm > MaxHopNm then
-          println(s"Cannot travel $distanceNm nm in a single hop (max hop is $MaxHopNm nm).")
-        else
-          map.travel(this, currentLocation, heading, distanceNm) match
-            case Some(nextPos) =>
-              currentLocation = nextPos
-            case None =>
-              () // Map.travel already prints why travel failed
-      case _ =>
-        println(s"Invalid 'go' command: '$modifiers'. Expected format: go <heading> [distanceNm]")
+      (headingOpt, distanceOpt) match
+        case (Some(heading), Some(distanceNm)) =>
+          if distanceNm <= 0.0 then
+            println(s"Distance must be positive (got $distanceNm nm).")
+            false
+          else if distanceNm > MaxHopNm then
+            println(s"Cannot travel $distanceNm nm in a single hop (max hop is $MaxHopNm nm).")
+            false
+          else
+            map.travel(this, currentLocation, heading, distanceNm) match
+              case Some(nextPos) =>
+                currentLocation = nextPos
+                true
+              case None =>
+                false // Map.travel already prints why travel failed
+        case _ =>
+          println(s"Invalid 'sail' command: '$modifiers'. Expected format: sail <heading> [distanceNm]")
+          false
 
 
   /** Signals that the player wants to quit the game. */
@@ -98,7 +105,8 @@ class Player(startingArea: Position, map: GameMap, val maxHp: Int = DefaultMaxHp
 
 
   /** Returns a brief description of the player’s state, for debugging purposes. */
-  override def toString = "Now at: " + this.location.LatToDDMMSS._1 + this.location.LatToDDMMSS._2 + "' N   "+this.location.LongToDDMMSS._1 + this.location.LongToDDMMSS._2 + "' E"
+  override def toString =
+    "Now at: " + this.location.LatToDDMMSS._1 + this.location.LatToDDMMSS._2 + "' N   "+this.location.LongToDDMMSS._1 + this.location.LongToDDMMSS._2 + "' E"
 
 
   // EFFECT MECHANICS__________________
@@ -106,15 +114,17 @@ class Player(startingArea: Position, map: GameMap, val maxHp: Int = DefaultMaxHp
   private def bonusFrom(buff: BuffType): Int =
     effects.filter(_.buff == buff).map(_.amount).sum
 
-  def luck: Int = baseLuck + bonusFrom(BuffType.Luck)
+  def luck: Int =
+    baseLuck + bonusFrom(BuffType.Luck)
 
   def attackPower: Int =
     inventory.weapon.map(_.attackDamage).getOrElse(UnarmedDamage) + bonusFrom(BuffType.Attack)
 
   def pierce: Double =
-    inventory.weapon.map(_.pierce).getOrElse(0.0)
+    math.min(1.0, inventory.weapon.map(_.pierce).getOrElse(0.0) + bonusFrom(BuffType.Pierce) / 100.0)
 
-  def armor: Int = inventory.totalArmor + bonusFrom(BuffType.Armor)
+  def armor: Int =
+    inventory.totalArmor + bonusFrom(BuffType.Armor)
 
   def accuracyModifier: Double =
     math.max(MinAccuracyModifier, 1.0 - effects.map(_.accuracyPenalty).sum)
@@ -157,6 +167,43 @@ class Player(startingArea: Position, map: GameMap, val maxHp: Int = DefaultMaxHp
     val effectText = if effects.isEmpty then "none" else effects.map(_.describe).mkString(", ")
     s"HP: $hp/$maxHp | Armor: $armor | Attack: $attackPower | Luck: $luck | " +
       s"Hit chance: ${(hitChance * 100).round}% | Effects: $effectText"
+
+  def eatByName(name: String): Unit =
+    inventory.findByName(name) match
+      case Some(food: Food) =>
+        eat(food).foreach(healed => println(s"You eat ${food.name} and heal $healed HP. ($hp/$maxHp HP)"))
+      case Some(other) => println(s"${other.name} is not food.")
+      case None        => println(s"No item named '$name' in your bag.")
+
+  def drinkByName(name: String): Unit =
+    inventory.findByName(name) match
+      case Some(bev: Beverage) =>
+        drink(bev, rng).foreach(effect => println(s"You drink ${bev.name} and gain ${effect.describe}."))
+      case Some(other) => println(s"${other.name} is not a beverage.")
+      case None        => println(s"No item named '$name' in your bag.")
+
+  def equipByName(name: String): Unit =
+    inventory.findByName(name) match
+      case Some(item: Equipment) =>
+        if inventory.equip(item) then println(s"Equipped ${item.name} (${item.slot.displayName}).")
+      case Some(other) => println(s"${other.name} is not equipment.")
+      case None        => println(s"No item named '$name' in your bag.")
+
+  /** Opens a chest from the bag (the first one if no name is given). A mimic starts a fight. */
+  def openChestByName(name: String): Unit =
+    val found =
+      if name.trim.isEmpty then inventory.chests.headOption
+      else inventory.chests.find(_.name.equalsIgnoreCase(name.trim))
+    found match
+      case None => println("You have no such chest.")
+      case Some(chest) =>
+        Loot.openChest(this, chest, rng) match
+          case None => println("You no longer have that chest.")
+          case Some(result) =>
+            Loot.describe(chest, result).foreach(println)
+            result match
+              case mimic: ChestResult.Mimic => Combat(this, mimic.enemy, rng).run()
+              case _                        => ()
 
   def debug() =
     println("CURRENT LOCATION------")

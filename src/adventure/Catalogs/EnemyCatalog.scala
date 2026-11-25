@@ -5,16 +5,20 @@ import adventure.*
 object EnemyCatalog {
 
   val pirate: EnemyType = new EnemyType(
-    name = "Matti Dörade",
+    name = "Parti Dörade",
     description = "A scruffy pirate swings over from another ship, cutlass drawn.",
-    maxHp = 40,
-    armor = 3,
-    attack = 10,
+    maxHp = 30,
+    armor = 2,
+    attack = 5,
     accuracy = 0.80,
     chestDrops = Vector(
       new ChestDrop(ChestCatalog.woodenChest, 0.50),
       new ChestDrop(ChestCatalog.ironChest, 0.10),
       new ChestDrop(ChestCatalog.diamondChest, 0.30)
+    ),
+    itemDrops = Vector(
+      new ItemDrop(QuestItemsCatalog.compass, 1),
+      new ItemDrop(BeverageCatalog.rum, 0.50)
     ),
     dialogs = Map(
       DialogTrigger.Appear -> Vector("Hand over the goods or walk the plank!", "This ship is ours now!"),
@@ -27,13 +31,17 @@ object EnemyCatalog {
   val student: EnemyType = new EnemyType(
     name = "Exhausted Student",
     description = "A pale student crawls onto the deck, clutching a half-finished lab report.",
-    maxHp = 30,
+    maxHp = 20,
     armor = 1,
     attack = 6,
     accuracy = 0.90,
     stealChance = 0.50,
     chestDrops = Vector(
       new ChestDrop(ChestCatalog.woodenChest, 0.60)
+    ),
+    itemDrops = Vector(
+      new ItemDrop(QuestItemsCatalog.tekkariDiploma, 1),
+      new ItemDrop(BeverageCatalog.tapWater, 0.50)
     ),
     dialogs = Map(
       DialogTrigger.Appear -> Vector("Is that... a drink? I haven't slept in three days.", "Do you have a pen? And a drink?"),
@@ -56,6 +64,10 @@ object EnemyCatalog {
     chestDrops = Vector(
       new ChestDrop(ChestCatalog.woodenChest, 0.70),
       new ChestDrop(ChestCatalog.ironChest, 0.25)
+    ),
+    itemDrops = Vector(
+      new ItemDrop(QuestItemsCatalog.rejectedPortfolio, 1),
+      new ItemDrop(BeverageCatalog.beer, 0.50)
     ),
     dialogs = Map(
       DialogTrigger.Appear -> Vector(

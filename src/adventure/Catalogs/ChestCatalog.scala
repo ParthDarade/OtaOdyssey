@@ -8,7 +8,8 @@ object ChestCatalog:
   val woodenMainLoots: Vector[LootEntry] = Vector(
     new LootEntry(FoodCatalog.apple, 30),
     new LootEntry(FoodCatalog.banana, 20),
-    new LootEntry(WeaponCatalog.cutlass, 10),
+    new LootEntry(FoodCatalog.noodles, 15),
+    new LootEntry(WeaponCatalog.rubberChiken, 10),
     new LootEntry(WeaponCatalog.spear, 6),
     new LootEntry(ArmorCatalog.leatherHelmet, 10),
     new LootEntry(ArmorCatalog.leatherChestplate, 8),
@@ -19,34 +20,42 @@ object ChestCatalog:
 
   val woodenBeverageLoots: Vector[LootEntry] = Vector(
     new LootEntry(BeverageCatalog.beer, 30),
-    new LootEntry(BeverageCatalog.rum, 20)
+    new LootEntry(BeverageCatalog.rum, 20),
+    new LootEntry(BeverageCatalog.tapWater, 15)
   )
 
   // --- Iron Chest: mid items + 2-3 drinks ---
   val ironMainLoots: Vector[LootEntry] = Vector(
     new LootEntry(FoodCatalog.banana, 15),
-    new LootEntry(WeaponCatalog.cutlass, 12),
+    new LootEntry(FoodCatalog.noodles, 20),
     new LootEntry(WeaponCatalog.spear, 12),
+    new LootEntry(WeaponCatalog.solderingIron, 8),
+    new LootEntry(WeaponCatalog.thesisDraft, 8),
     new LootEntry(ArmorCatalog.ironHelmet, 12),
     new LootEntry(ArmorCatalog.ironChestplate, 8),
     new LootEntry(ArmorCatalog.ironLeggings, 10),
     new LootEntry(ArmorCatalog.ironGloves, 14),
-    new LootEntry(ArmorCatalog.ironBoots, 14)
+    new LootEntry(ArmorCatalog.ironBoots, 14),
+    new LootEntry(ArmorCatalog.cardBoard, 7)
   )
 
   val ironBeverageLoots: Vector[LootEntry] = Vector(
     new LootEntry(BeverageCatalog.rum, 20),
     new LootEntry(BeverageCatalog.whiskey, 25),
-    new LootEntry(BeverageCatalog.vodka, 20)
+    new LootEntry(BeverageCatalog.vodka, 20),
+    new LootEntry(BeverageCatalog.tapWater, 10)
   )
 
   // --- Diamond Chest: high-tier / special items + 3-4 drinks ---
   val diamondMainLoots: Vector[LootEntry] = Vector(
     new LootEntry(FoodCatalog.beefWellington, 25),
+    new LootEntry(FoodCatalog.noodles, 15),
     new LootEntry(ArmorCatalog.ironChestplate, 10),
     new LootEntry(ArmorCatalog.ironLeggings, 10),
     new LootEntry(WeaponCatalog.totallyNormalStick, 6),
+    new LootEntry(WeaponCatalog.solderingIron, 10),
     new LootEntry(WeaponCatalog.legendaryBlade, 4),
+    new LootEntry(ArmorCatalog.cardBoard, 8),
     new LootEntry(ArmorCatalog.tekkariCap, 5)
   )
 

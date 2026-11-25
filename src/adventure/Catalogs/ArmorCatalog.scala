@@ -16,6 +16,7 @@ object ArmorCatalog:
   val ironGloves = new ArmorPiece(263, "Iron Gloves", "Sounds... Ineffective?", EquipSlot.Gloves, defenseBonus = 3)
   val ironBoots = new ArmorPiece(264, "Iron Boots", "Clanks when you walk aswell.", EquipSlot.Shoes, defenseBonus = 3)
 
+  val cardBoard = new ArmorPiece(298, "Amazon Box Lid", "Waterproof for roughly four seconds.", EquipSlot.Chestplate, defenseBonus = 10)
   val tekkariCap = new ArmorPiece(299, "Tekkari Cap", "Honor of a tekkari.", EquipSlot.Helmet, defenseBonus = 15, isSpecial = true)
 
   val leather: Vector[ArmorPiece] = Vector(
@@ -35,6 +36,7 @@ object ArmorCatalog:
   )
 
   val special: Vector[ArmorPiece] = Vector(
+    cardBoard,
     tekkariCap
   )
 

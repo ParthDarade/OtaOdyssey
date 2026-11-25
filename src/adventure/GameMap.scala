@@ -1,4 +1,5 @@
 package adventure
+
 import scala.math.*
 import adventure.Catalogs.QuestCatalog
 
@@ -106,10 +107,10 @@ class GameMap:
 
       println(s"Spotted $name at ${this.heading(pos,targetloc)}")
     }
-    places.find(place => place.isAtPlace(pos) ).foreach{ place =>
+    places.find(place => !place.isQuestOver && place.isAtPlace(pos)).foreach{ place =>
       println(s" Approaching: ${place.name}")
       println(s"Do you wish to land? (type yes/y)")
-      val choice = scala.io.StdIn.readLine().trim.toLowerCase
+      val choice = Option(scala.io.StdIn.readLine()).getOrElse("").trim.toLowerCase
       if choice == "yes" || choice == "y" then
         place.landAtPlace(player)
       else println("Continuing Voyage.....")

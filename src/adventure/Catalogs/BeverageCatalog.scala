@@ -9,5 +9,5 @@ object BeverageCatalog:
   val whiskey = Beverage(152, "Whiskey", "Strong and smoky.", baseBuff = 8, accuracyPenalty = 0.10)
   val vodka = Beverage(153, "Vodka", "Strong asf.", baseBuff = 10, accuracyPenalty = 0.20)
   val mysteriousTekkariCoctail = Beverage(154, "Mysterious Tekkari Coctail", "Maybe you shouldnt drink this?", baseBuff = 30, accuracyPenalty = 0.50)
-  
-  val all: Vector[Beverage] = Vector(rum, beer, whiskey, vodka, mysteriousTekkariCoctail)
+  val tapWater = Beverage(155, "Tap Water", "Literal tap water, does nothing.", baseBuff = 0, accuracyPenalty = 0)
+  val all: Vector[Beverage] = Vector(rum, beer, whiskey, vodka, mysteriousTekkariCoctail, tapWater)

@@ -4,7 +4,9 @@ class Place(val name: String, val location: Position, val quest: Quest, val radi
   val description = "You smell sea salt and boundless water in the sea."
    //In Nautical Miles
   var isLandedAtPlace = false
-  var isQuestOver = false
+
+  def isQuestOver: Boolean =
+    quest.isCompleted
 
   //val bounds = Vector[(Double, Double)]
   def isAtPlace(position: Position): Boolean = {

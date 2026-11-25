@@ -1,6 +1,5 @@
 package adventure.Catalogs
-import adventure.Quest
-import adventure.Enemy
+import adventure.{Enemy, Quest}
 object QuestCatalog:
   val Goblin = Enemy(EnemyCatalog.pirate)
   val Ronin = Enemy(EnemyCatalog.ronnin)

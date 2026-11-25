@@ -28,11 +28,12 @@ class Combat(
     while !isFinished && !player.hasQuit do
       print("\n> ")
       val rawInput = Option(StdIn.readLine())
-      if rawInput.isEmpty then
-        player.quit()
-        println("Exiting combat.")
-      else
-        rawInput.foreach(_ => handleCommand(_))
+      rawInput match
+        case None =>
+          player.quit()
+          println("Exiting combat.")
+        case Some(input) =>
+          handleCommand(input)
 
     println()
     println("=== COMBAT OVER ===")
@@ -49,11 +50,11 @@ class Combat(
     val arg = if parts.length > 1 then parts(1).trim else ""
 
     cmd match
-      case "quit" | "q" =>
+      case "quit"=>
         player.quit()
         println("Exiting combat.")
 
-      case "status" | "s" =>
+      case "status"=>
         println(player.status)
         println(s"${enemy.name}: ${enemy.hp}/${enemy.maxHp} HP | Armor: ${enemy.armor} | Attack: ${enemy.attack}")
         println(CommandList)
@@ -66,11 +67,11 @@ class Combat(
           println(openCategory(arg))
         println(CommandList)
 
-      case "bag" | "i" | "inv" =>
+      case "bag" =>
         println(openBag())
         println(CommandList)
 
-      case "equip" | "e" =>
+      case "equip" =>
         if arg.isEmpty then
           println("Equip what? Type: equip <item name>")
         else
@@ -204,7 +205,7 @@ class Combat(
 
   private def enemyTurn(): Vector[String] =
     val lines = collection.mutable.Buffer[String]()
-    val drinks = player.inventory.beverages
+    val drinks = player.inventory.beverages.filterNot(_.isSpecial)
 
     if enemy.stealChance > 0.0 && drinks.nonEmpty && rng.nextDouble() < enemy.stealChance then
       val stolen = drinks(rng.nextInt(drinks.size))
@@ -233,6 +234,11 @@ class Combat(
     if drops.nonEmpty then
       player.inventory.addAll(drops)
       lines += s"Looted chests: ${drops.map(_.name).mkString(", ")}."
+    
+    val droppedItems = Loot.itemDrops(enemy.kind, rng)
+    if droppedItems.nonEmpty then
+      player.inventory.addAll(droppedItems)
+      lines += s"Looted items: ${droppedItems.map(_.name).mkString(", ")}."
 
     lines.toVector
 

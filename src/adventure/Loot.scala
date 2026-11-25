@@ -33,6 +33,9 @@ object Loot:
   /** The chests an enemy drops after it is defeated: each of its chest types is rolled separately. */
   def chestDrops(kind: EnemyType, rng: Random): Vector[Chest] =
     kind.chestDrops.collect { case drop if rng.nextDouble() < drop.chance => drop.chest }
+    
+  def itemDrops(kind: EnemyType, rng: Random): Vector[Item] =
+    kind.itemDrops.collect { case drop if rng.nextDouble() < drop.chance => drop.item }
 
   /** Text for the result of openChest. For a mimic, Combat.start() prints the rest. */
   def describe(chest: Chest, result: ChestResult): Vector[String] =

@@ -10,27 +10,60 @@ class Action(input: String):
   private val command   = input.trim.toLowerCase
   private val verb      = command.takeWhile( _ != ' ' )
   private val modifiers = command.drop(verb.length).trim
-  private val actionRNG = Random()
 
   /** Causes the given player to take the action represented by this object, assuming
     * that the command was understood. Returns ``false` if the command was not recognized
     * and true` otherwise. */
+  private var turnUsed = false
+
+  /** True if the last call to execute used up a game turn. */
+  def usesTurn: Boolean = turnUsed
+
   def execute(actor: Player): Boolean =
-    if actor.isInQuest && this.command.isEmpty then
+    if actor.isInQuest && command.isEmpty then
       actor.continueQuest()
       true
-    else if this.verb == "sail" && !actor.isInQuest then
-      actor.go(this.modifiers)
-      true
-    else if this.verb == "debug" then
-      actor.debug()
-      true
-
-    else if this.verb == "quit" then
-      actor.quit()
-      true
     else
-      false
+      verb match
+        case "sail" if !actor.isInQuest =>
+          turnUsed = actor.go(modifiers)
+          true
+        case "inventory" | "bag" | "i" =>
+          println(actor.inventory.openBag)
+          true
+        case "open" =>
+          if modifiers == "chest" || modifiers.startsWith("chest ") then
+            val chestName = if modifiers == "chest" then "" else modifiers.drop("chest".length).trim
+            actor.openChestByName(chestName)
+          else
+            println(if modifiers.isEmpty then actor.inventory.openBag else actor.inventory.openCategory(modifiers))
+          true
+        case "unlock" =>
+          actor.openChestByName(modifiers)
+          true
+        case "eat" =>
+          actor.eatByName(modifiers)
+          true
+        case "drink" =>
+          actor.drinkByName(modifiers)
+          true
+        case "equip" =>
+          actor.equipByName(modifiers)
+          true
+        case "status" =>
+          println(actor.status)
+          true
+        case "help" =>
+          println("Commands: sail <heading> [nm] | inventory | open <category> | unlock <chest> | eat <item> | drink <item> | equip <item> | status | quit")
+          true
+        case "debug" =>
+          actor.debug()
+          true
+        case "quit" =>
+          actor.quit()
+          true
+        case _ =>
+          false
 
 
   /** Returns a textual description of the action object, for debugging purposes. */
