@@ -1,5 +1,6 @@
 package adventure
 import scala.math.*
+import adventure.Catalogs.QuestCatalog
 
 class GameMap:
   private val Width = 1066.0
@@ -214,5 +215,5 @@ class GameMap:
     ("TOKYO Tower Island", fromPixels(596.0, 365.0))
   )
   private val places: Vector[Place] = Vector(
-    Place(name = "Tokyo Tower Island", location = fromPixels(596.0, 365.0), quest = Quest("Finding the pirate"))
+    Place(name = "Tokyo Tower Island", location = fromPixels(596.0, 365.0), quest = QuestCatalog.TokyoQuest)
   )
